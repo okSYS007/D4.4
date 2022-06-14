@@ -34,12 +34,12 @@ class Post(models.Model):
 
     post_author = models.ForeignKey(Author, on_delete=models.CASCADE)
     CHOICES = [
-        (1, 'Статья'), 
-        (2, 'Новость')
+        ('1', 'Статья'), 
+        ('2', 'Новость')
         ]
     post_choice = models.CharField(max_length = 2, 
                             choices = CHOICES, 
-                            default = 'Статья')
+                            default = '1')
     creation_date = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
     post_title = models.CharField(max_length=255)
@@ -58,6 +58,9 @@ class Post(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.post_title, self.creation_date)
+
+    def get_absolute_url(self): 
+        return f'/news/{self.id}' 
 
 class PostCategory(models.Model):
 

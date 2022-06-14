@@ -1,5 +1,5 @@
 # from django.shortcuts import render
-from django.views.generic import ListView, DetailView # импортируем класс получения деталей объекта
+from django.views.generic import ListView, DetailView, CreateView # импортируем класс получения деталей объекта
 from django.core.paginator import Paginator # импортируем класс, позволяющий удобно осуществлять постраничный вывод
 from django.shortcuts import render
 from django.views import View # импортируем простую вьюшку
@@ -18,18 +18,7 @@ class PostList(ListView):
 
     def get_context_data(self, **kwargs): # забираем отфильтрованные объекты переопределяя метод get_context_data у наследуемого класса (привет, полиморфизм, мы скучали!!!)
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        context['form'] = PostForm()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST) # создаём новую форму, забиваем в неё данные из POST-запроса 
- 
-        if form.is_valid(): # если пользователь ввёл всё правильно и нигде не накосячил, то сохраняем новый товар
-            form.save()
- 
-        return super().get(request, *args, **kwargs)
-    
+        return context    
 
 # # создаём представление, в котором будут детали конкретного отдельного товара
 class PostDetail(DetailView):
@@ -64,3 +53,7 @@ class Search(View):
             'search': search,
         }
         return render(request, 'search.html', data)
+
+class PostAdd(CreateView):
+    template_name = 'add.html'
+    form_class = PostForm

@@ -8,14 +8,14 @@ Articles
 {% endblock title %}
 
 {% block content %}
-<h1>Все статьи</h1>
+<h1>Статья</h1>
 
 {% if article %}
-    {{ article.post_title|Censor:article.post_title}}
+    Заголовок: {{ article.post_title|Censor:article.post_title}}
     <br>
-    {{ article.post_text|Censor:article.post_text}} 
+    Текс: {{ article.post_text|Censor:article.post_text}} 
     <br>
-    {{ article.creation_date|date:'d-M-Y-H:i' }}
+    Дата создания: {{ article.creation_date|date:'d-M-Y-H:i' }}
 {% else %}
     <h2>Статей нет!</h2>
 {% endif %}
