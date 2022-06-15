@@ -1,5 +1,6 @@
+from dataclasses import field
+from pyexpat import model
 from django.forms import ModelForm # Импортируем true-false поле
-from django import forms
 from .models import Post
  
 class PostForm(ModelForm):

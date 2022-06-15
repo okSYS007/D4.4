@@ -1,9 +1,9 @@
 # from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView # импортируем класс получения деталей объекта
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView  # импортируем класс получения деталей объекта
 from django.core.paginator import Paginator # импортируем класс, позволяющий удобно осуществлять постраничный вывод
 from django.shortcuts import render
 from django.views import View # импортируем простую вьюшку
-from .models import Post, Category
+from .models import Post
 from .filters import PostFilter # импортируем недавно написанный фильтр
 from .forms import PostForm # импортируем нашу форму
  
@@ -25,7 +25,6 @@ class PostDetail(DetailView):
     model = Post # модель всё та же, но мы хотим получать детали конкретно отдельного товара
     template_name = 'article.html' # название шаблона будет product.html
     context_object_name = 'article' # название объекта
-    queryset = Post.objects.filter(post_choice = 1).order_by('-creation_date')
 
 class SearchList(ListView):
 
@@ -33,7 +32,6 @@ class SearchList(ListView):
     template_name = 'search.html'
     context_object_name = 'search'
     ordering = ['-creation_date']
-    paginate_by = 1 # поставим постраничный вывод в один элемент
 
     def get_context_data(self, **kwargs): # забираем отфильтрованные объекты переопределяя метод get_context_data у наследуемого класса (привет, полиморфизм, мы скучали!!!)
         context = super().get_context_data(**kwargs)
@@ -57,3 +55,13 @@ class Search(View):
 class PostAdd(CreateView):
     template_name = 'add.html'
     form_class = PostForm
+
+class PostEdit(UpdateView):
+    model = Post
+    template_name = 'edit.html'
+    form_class = PostForm
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'delete.html'
+    success_url ="/news"
